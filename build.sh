@@ -1,8 +1,6 @@
 #!/bin/bash
 set -e
 
-wwwroot=$1
-
 IMAGE=${IMAGE:-docker4gis/serve}
 DOCKER_BASE=$(npx --yes docker4gis@"${DOCKER4GIS_VERSION:-latest}" base)
 
