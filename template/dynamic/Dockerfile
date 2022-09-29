@@ -1,3 +1,3 @@
-FROM docker4gis/serve:npx-1
+FROM docker4gis/serve:stale
 
 ENV DYNAMIC=true
