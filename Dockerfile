@@ -1,28 +1,41 @@
 FROM node:16.17.1-alpine3.16
 
-RUN apk update; apk add --no-cache \
+RUN apk update
+RUN apk add --no-cache \
     bash
 
 RUN npm install -g serve
 
 COPY conf/serve.json /
-COPY conf/entrypoint /
 
-COPY template /template/
-
-EXPOSE 80
 VOLUME /fileport
-
-ENTRYPOINT [ "/entrypoint" ]
-CMD [ "serve" ]
 
 ENV DYNAMIC=
 ENV SINGLE=
 
+# Allow configuration before things start up.
+COPY conf/entrypoint /
+ENTRYPOINT ["/entrypoint"]
+CMD ["serve"]
+
+# Example plugin use.
+# COPY conf/.plugins/bats /tmp/bats
+# RUN /tmp/bats/install.sh
+
+# This may come in handy.
+ONBUILD ARG DOCKER_USER
+ONBUILD ENV DOCKER_USER=$DOCKER_USER
+
+# Extension template, as required by `dg component`.
+COPY template /template/
+# Make this an extensible base component; see
+# https://github.com/merkatorgis/docker4gis/tree/npm-package/docs#extending-base-components.
 COPY conf/.docker4gis /.docker4gis
 COPY build.sh /.docker4gis/build.sh
 COPY run.sh /.docker4gis/run.sh
+# This component doesn't support any extension configuration.
 # ONBUILD COPY conf /tmp/conf
-# ONBUILD RUN touch /tmp/conf/args; \
-#     cp /tmp/conf/args /.docker4gis
+# ONBUILD RUN touch /tmp/conf/args
+# ONBUILD RUN /tmp/conf/args /.docker4gis
+# Instead:
 RUN touch /.docker4gis/args
