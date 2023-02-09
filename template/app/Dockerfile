@@ -1,4 +1,4 @@
-FROM docker4gis/serve:v0.0.3
+FROM docker4gis/serve:v0.0.4
 
 # Uncomment to let every request land on index.html
 # ENV SINGLE=true
