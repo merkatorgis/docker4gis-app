@@ -8,19 +8,10 @@ RUN npm install -g serve
 
 COPY conf/serve.json /
 
-VOLUME /fileport
-
-ENV DYNAMIC=
-ENV SINGLE=
-
 # Allow configuration before things start up.
 COPY conf/entrypoint /
 ENTRYPOINT ["/entrypoint"]
 CMD ["serve"]
-
-# Example plugin use.
-# COPY conf/.plugins/bats /tmp/bats
-# RUN /tmp/bats/install.sh
 
 # This may come in handy.
 ONBUILD ARG DOCKER_USER
@@ -31,11 +22,7 @@ COPY template /template/
 # Make this an extensible base component; see
 # https://github.com/merkatorgis/docker4gis/tree/npm-package/docs#extending-base-components.
 COPY conf/.docker4gis /.docker4gis
-COPY build.sh /.docker4gis/build.sh
-COPY run.sh /.docker4gis/run.sh
-# This component doesn't support any extension configuration.
-# ONBUILD COPY conf /tmp/conf
-# ONBUILD RUN touch /tmp/conf/args
-# ONBUILD RUN cp /tmp/conf/args /.docker4gis
-# Instead:
-RUN touch /.docker4gis/args
+COPY build.sh run.sh /.docker4gis/
+ONBUILD COPY conf /tmp/conf
+ONBUILD RUN touch /tmp/conf/args
+ONBUILD RUN cp /tmp/conf/args /.docker4gis/
