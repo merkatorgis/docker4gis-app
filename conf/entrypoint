@@ -12,9 +12,9 @@ if [ "$1" = 'serve' ]; then
 		wwwroot=/fileport/root
 		[ "$SUB" ] && wwwroot=$wwwroot/$SUB
 		mkdir -p "$wwwroot"
-		ln -s "$wwwroot" /wwwroot
+		[ -d /wwwroot ] || ln -s "$wwwroot" /wwwroot
 	fi
-	mv /serve.json /wwwroot
+	[ -f /wwwroot/serve.json ] || cp /serve.json /wwwroot
 	if [ "$SINGLE" ]; then
 		exec serve --listen 80 --single /wwwroot
 	else
