@@ -1,4 +1,4 @@
-FROM docker4gis/serve:v0.0.13
+FROM docker4gis/serve:v0.0.14
 
 # Setting SINGLE makes every request land on index.html.
 ENV SINGLE=true
